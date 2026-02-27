@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aswin Krishna T P — Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04080f;
+  --bg2:#070d18;
+  --surface:#0b1522;
+  --card:#0d1826;
+  --border:#162236;
+  --border2:#1f3250;
+  --cyan:#38bdf8;
+  --cyan2:#0ea5e9;
+  --gold:#f59e0b;
+  --rose:#f43f5e;
+  --green:#34d399;
+  --text:#c8ddf0;
+  --muted:#4a647e;
+  --white:#f0f8ff;
+  --heading:#e8f4ff;
+}
+*,::before,::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;cursor:none}
+
+/* CURSOR */
+#c1{position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transition:transform .08s;mix-blend-mode:screen;transform:translate(-50%,-50%)}
+#c2{position:fixed;width:28px;height:28px;border:1px solid rgba(56,189,248,.5);border-radius:50%;pointer-events:none;z-index:9998;transition:all .2s ease;transform:translate(-50%,-50%)}
+
+/* INTRO */
+#intro{position:fixed;inset:0;z-index:10000;background:#020509;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.i-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);top:0;animation:scanLine 2.5s ease forwards}
+@keyframes scanLine{from{top:0}to{top:100%}}
+.i-name{font-family:'Cormorant Garamond',serif;font-size:clamp(56px,14vw,160px);font-weight:700;color:#fff;letter-spacing:-.03em;line-height:.85;text-align:center;animation:iReveal 1.4s cubic-bezier(.16,1,.3,1) .5s both}
+.i-name span{color:var(--cyan)}
+.i-sub{font-family:'JetBrains Mono',monospace;font-size:clamp(9px,1.4vw,12px);color:var(--muted);letter-spacing:.5em;text-transform:uppercase;margin-top:20px;animation:iReveal 1s ease 1s both}
+@keyframes iReveal{from{opacity:0;transform:translateY(50px);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+.intro-out{animation:iOut .6s ease 3.4s forwards}
+@keyframes iOut{to{opacity:0;transform:scale(1.03);visibility:hidden;pointer-events:none}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(4,8,15,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(56,189,248,.07);animation:navIn 1s ease 3.8s both}
+@keyframes navIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+.n-brand{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--cyan);text-decoration:none;letter-spacing:-.02em}
+.n-links{display:flex;gap:24px;list-style:none}
+.n-links a{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .3s}
+.n-links a:hover{color:var(--cyan)}
+.n-right{display:flex;gap:8px}
+.nbtn{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;border:1px solid;background:transparent;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center}
+.nbtn-edit{border-color:var(--rose);color:var(--rose)}
+.nbtn-edit:hover{background:var(--rose);color:#fff}
+.nbtn-gh{border-color:var(--border2);color:var(--muted)}
+.nbtn-gh:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 5% 80px;position:relative;overflow:hidden;animation:fadeIn .8s ease 3.8s both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.hero-inner{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:860px;width:100%;position:relative;z-index:2}
+
+/* PROFILE PHOTO */
+.photo-ring{position:relative;width:148px;height:148px;margin-bottom:28px;flex-shrink:0}
+.photo-ring-spin{position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(var(--cyan),var(--gold),var(--rose),var(--cyan));animation:ringSpin 6s linear infinite;opacity:.8}
+@keyframes ringSpin{to{transform:rotate(360deg)}}
+.photo-ring-bg{position:absolute;inset:2px;border-radius:50%;background:var(--bg)}
+.photo-img{position:absolute;inset:6px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid var(--border2)}
+.photo-img img{width:100%;height:100%;object-fit:cover;object-position:top center;display:none}
+.photo-img img.loaded{display:block}
+.photo-placeholder{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:700;color:var(--cyan)}
+.photo-hint{position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity .3s;pointer-events:none}
+.photo-ring:hover .photo-hint{opacity:1}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px}
+.dpulse{width:7px;height:7px;background:var(--green);border-radius:50%;animation:dpulse 2s infinite}
+@keyframes dpulse{0%,100%{box-shadow:0 0 0 0 rgba(52,211,153,.5)}50%{box-shadow:0 0 0 7px rgba(52,211,153,0)}}
+
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,8vw,100px);font-weight:700;line-height:.88;letter-spacing:-.04em;color:var(--heading);margin-bottom:10px}
+.hero-name .hl{color:var(--cyan)}
+.hero-title{font-family:'JetBrains Mono',monospace;font-size:clamp(11px,1.6vw,14px);color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-bottom:18px}
+.hero-div{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);margin:0 auto 22px}
+.hero-bio{font-size:15px;color:var(--muted);line-height:1.8;max-width:580px;margin:0 auto 28px}
+.hero-bio strong{color:var(--text)}
+
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px}
+.chip{font-family:'JetBrains Mono',monospace;font-size:10px;padding:5px 12px;border:1px solid var(--border2);color:var(--muted);letter-spacing:.06em;transition:all .3s}
+.chip:hover{border-color:var(--cyan);color:var(--cyan)}
+
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:52px}
+.btn-p{padding:12px 28px;background:var(--cyan);color:#000;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .3s}
+.btn-p:hover{background:var(--gold)}
+.btn-g{padding:12px 28px;border:1px solid var(--border2);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .3s}
+.btn-g:hover{border-color:var(--cyan);color:var(--cyan)}
+
+.hero-stats{display:flex;border:1px solid var(--border);overflow:hidden;width:100%}
+.hstat{padding:20px 0;text-align:center;border-right:1px solid var(--border);flex:1}
+.hstat:last-child{border-right:none}
+.hstat-v{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:var(--cyan);line-height:1}
+.hstat-l{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-top:4px}
+
+/* BG */
+.bgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(56,189,248,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.018) 1px,transparent 1px);background-size:72px 72px;pointer-events:none}
+.borb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none}
+
+/* SECTIONS */
+.sec{padding:96px 5%;max-width:1280px;margin:0 auto}
+.sl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:.4em;text-transform:uppercase;margin-bottom:8px}
+.sh{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,62px);font-weight:700;color:var(--heading);letter-spacing:-.03em;line-height:.9;margin-bottom:52px}
+.sh em{color:var(--cyan);font-style:italic}
+
+/* ABOUT */
+.about-g{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:start}
+.ab-p{font-size:15px;color:var(--muted);line-height:1.85;margin-bottom:16px}
+.ab-p strong{color:var(--text)}
+.sk-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:.3em;text-transform:uppercase;margin-bottom:20px}
+.sk-row{margin-bottom:18px}
+.sk-meta{display:flex;justify-content:space-between;margin-bottom:7px}
+.sk-n{font-size:13px;font-weight:500;color:var(--text)}
+.sk-p{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.sk-track{height:1px;background:var(--border)}
+.sk-fill{height:1px;background:linear-gradient(90deg,var(--cyan),var(--gold));transition:width 1.5s cubic-bezier(.25,.46,.45,.94);position:relative}
+.sk-fill::after{content:'';position:absolute;right:-5px;top:-4px;width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+
+/* EXPERIENCE */
+.exp-wrap{position:relative;padding-left:40px;border-left:1px solid var(--border)}
+.exp-item{position:relative;margin-bottom:52px;opacity:0;transform:translateX(-20px);transition:all .6s ease}
+.exp-item.vis{opacity:1;transform:none}
+.exp-dot{position:absolute;left:-48px;top:6px;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--cyan);background:var(--bg)}
+.exp-dot::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--cyan)}
+.exp-period{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:.1em;margin-bottom:4px}
+.exp-role{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--heading);margin-bottom:2px}
+.exp-co{font-size:13px;color:var(--muted);margin-bottom:14px}
+.exp-ul{list-style:none}
+.exp-ul li{font-size:13px;color:var(--muted);line-height:1.7;padding-left:16px;position:relative;margin-bottom:5px}
+.exp-ul li::before{content:'→';position:absolute;left:0;color:var(--cyan);font-size:11px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 9px;border:1px solid var(--border);color:var(--muted);letter-spacing:.05em;transition:all .3s}
+.tag:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* PROJECTS */
+.proj-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.proj-card{background:var(--card);border:1px solid var(--border);padding:28px;position:relative;overflow:hidden;opacity:0;transform:translateY(28px);transition:all .5s ease}
+.proj-card.vis{opacity:1;transform:none}
+.proj-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--gold));transform:scaleX(0);transition:transform .4s;transform-origin:left}
+.proj-card:hover{border-color:rgba(56,189,248,.25);transform:translateY(-6px)!important;box-shadow:0 20px 50px rgba(56,189,248,.07)}
+.proj-card:hover::after{transform:scaleX(1)}
+.proj-n{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;color:var(--border);line-height:1;margin-bottom:8px}
+.proj-t{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:var(--heading);margin-bottom:5px}
+.proj-stack{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:.1em;margin-bottom:10px}
+.proj-d{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.proj-lnk{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cyan);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:gap .3s}
+.proj-lnk:hover{gap:10px}
+
+/* CERTS */
+.cert-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.cert-c{background:var(--card);border:1px solid var(--border);padding:22px;transition:all .3s;opacity:0;transform:scale(.96)}
+.cert-c.vis{opacity:1;transform:scale(1)}
+.cert-c:hover{border-color:var(--gold);transform:translateY(-3px)!important}
+.cert-ic{font-size:24px;margin-bottom:10px}
+.cert-n{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:4px}
+.cert-i{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cyan)}
+.cert-y{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* CONTACT */
+.contact-g{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.cl-h{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,6vw,84px);font-weight:700;line-height:.85;color:var(--heading);letter-spacing:-.04em;margin-bottom:18px}
+.cl-h em{color:var(--cyan);font-style:italic;display:block}
+.cl-n{font-size:15px;color:var(--muted);line-height:1.7}
+.c-list{display:flex;flex-direction:column;gap:12px}
+.c-link{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--card);border:1px solid var(--border);text-decoration:none;transition:all .3s}
+.c-link:hover{border-color:var(--cyan);background:rgba(56,189,248,.04)}
+.c-ic{font-size:16px;width:28px;text-align:center}
+.c-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.c-val{font-size:13px;font-weight:500;color:var(--text)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:28px 5%;display:flex;align-items:center;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+footer span:last-child{color:var(--cyan)}
+
+/* REVEALS */
+.rev{opacity:0;transform:translateY(32px);transition:all .65s ease}
+.rev.vis{opacity:1;transform:none}
+
+/* ADMIN */
+#pwd-ov{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9001;display:none;align-items:center;justify-content:center}
+#pwd-ov.on{display:flex}
+.pwd-box{background:var(--surface);border:1px solid var(--border);padding:44px;width:360px;text-align:center}
+.pwd-box h3{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:var(--rose);margin-bottom:22px}
+.pwd-i{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:11px 16px;font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;margin-bottom:12px;text-align:center;letter-spacing:.3em;transition:border-color .3s}
+.pwd-i:focus{border-color:var(--cyan)}
+.pwd-err{color:var(--rose);font-size:11px;margin-top:8px;display:none;font-family:'JetBrains Mono',monospace}
+
+#admin{position:fixed;inset:0;background:rgba(4,8,15,.97);backdrop-filter:blur(20px);z-index:9000;overflow-y:auto;display:none}
+#admin.on{display:block}
+.aw{max-width:900px;margin:0 auto;padding:56px 40px}
+.ah{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.ah h2{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:700;color:var(--rose)}
+.ah-close{font-family:'JetBrains Mono',monospace;font-size:11px;padding:8px 18px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .3s}
+.ah-close:hover{border-color:var(--rose);color:var(--rose)}
+.as{margin-bottom:44px}
+.as h3{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--cyan);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.ag{display:grid;gap:10px}
+.ar2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ar3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.ai,.ata{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 14px;font-family:'Inter',sans-serif;font-size:14px;width:100%;outline:none;transition:border-color .3s}
+.ai:focus,.ata:focus{border-color:var(--cyan)}
+.ata{min-height:80px;resize:vertical}
+.abtn{padding:10px 24px;background:var(--cyan);color:#000;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;transition:all .3s;width:fit-content}
+.abtn:hover{background:var(--gold)}
+.alist{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.ali{background:var(--surface);border:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;font-size:13px}
+.adel{background:transparent;border:1px solid var(--rose);color:var(--rose);padding:3px 9px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10px;transition:all .3s}
+.adel:hover{background:var(--rose);color:#fff}
+.amsg{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);margin-top:8px;display:none}
+
+.photo-upload-area{border:2px dashed var(--border2);padding:32px;text-align:center;cursor:pointer;transition:all .3s;position:relative}
+.photo-upload-area:hover{border-color:var(--cyan);background:rgba(56,189,248,.03)}
+.pua-icon{font-size:36px;margin-bottom:10px}
+.pua-text{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.1em;line-height:1.6}
+.pua-prev{width:80px;height:80px;border-radius:50%;object-fit:cover;object-position:top center;margin:14px auto 0;display:none;border:2px solid var(--cyan)}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--cyan)}
+
+@media(max-width:860px){
+  .about-g,.contact-g{grid-template-columns:1fr}
+  .n-links{display:none}
+  .hero-stats{flex-wrap:wrap}
+  .hstat{min-width:45%}
+}
+</style>
+</head>
+<body>
+
+<div id="c1"></div>
+<div id="c2"></div>
+
+<!-- CINEMATIC INTRO -->
+<div id="intro" class="intro-out">
+  <div class="i-line"></div>
+  <div class="i-name">ASWIN<br><span>KRISHNA</span></div>
+  <div class="i-sub">Data Analyst &nbsp;·&nbsp; Portfolio 2026</div>
+</div>
+
+<!-- PASSWORD MODAL -->
+<div id="pwd-ov">
+  <div class="pwd-box">
+    <h3>Admin Access</h3>
+    <input class="pwd-i" type="password" id="pwd-inp" placeholder="Password" />
+    <button class="abtn" style="width:100%;margin-top:4px" onclick="chkPwd()">Enter</button>
+    <div class="pwd-err" id="pwd-err">Incorrect password.</div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin">
+  <div class="aw">
+    <div class="ah">
+      <h2>⚙ Admin Panel</h2>
+      <button class="ah-close" onclick="closeAdmin()">✕ Close</button>
+    </div>
+
+    <div class="as">
+      <h3>📸 Profile Photo</h3>
+      <div class="photo-upload-area" onclick="document.getElementById('pfile').click()">
+        <input type="file" id="pfile" accept="image/*" onchange="handlePhoto(event)" style="display:none" />
+        <div class="pua-icon">📷</div>
+        <div class="pua-text">Click to upload your profile photo<br>JPG · PNG · WEBP supported</div>
+        <img class="pua-prev" id="pua-prev" alt="preview" />
+      </div>
+      <div style="display:flex;gap:10px;margin-top:12px">
+        <button class="abtn" onclick="savePhoto()">Save Photo</button>
+        <button class="abtn" style="background:var(--rose)" onclick="removePhoto()">Remove Photo</button>
+      </div>
+    </div>
+
+    <div class="as">
+      <h3>👤 Profile Info</h3>
+      <div class="ag">
+        <div class="ar2"><input class="ai" id="ap-name" placeholder="Full Name" /><input class="ai" id="ap-role" placeholder="Job Title" /></div>
+        <div class="ar2"><input class="ai" id="ap-email" placeholder="Email" /><input class="ai" id="ap-phone" placeholder="Phone" /></div>
+        <div class="ar2"><input class="ai" id="ap-linkedin" placeholder="LinkedIn URL" /><input class="ai" id="ap-github" placeholder="GitHub URL" /></div>
+        <input class="ai" id="ap-location" placeholder="Location" />
+        <textarea class="ata" id="ap-bio" placeholder="Short bio for hero section"></textarea>
+        <div class="ar3">
+          <input class="ai" id="ap-s1" placeholder="Stat 1 val (e.g. 6+)" />
+          <input class="ai" id="ap-s2" placeholder="Stat 2 val (e.g. 8+)" />
+          <input class="ai" id="ap-s3" placeholder="Stat 3 val (e.g. 6)" />
+        </div>
+        <button class="abtn" onclick="saveProfile()">Save Profile</button>
+        <div class="amsg" id="pm">✓ Profile saved!</div>
+      </div>
+    </div>
+
+    <div class="as">
+      <h3>🛠 Skills</h3>
+      <div class="ag">
+        <div class="ar3">
+          <input class="ai" id="as-n" placeholder="Skill name" />
+          <input class="ai" id="as-l" placeholder="Level (Advanced)" />
+          <input class="ai" type="number" id="as-p" placeholder="% (0–100)" min="0" max="100" />
+        </div>
+        <button class="abtn" onclick="addSkill()">Add Skill</button>
+      </div>
+      <div class="alist" id="sk-list"></div>
+    </div>
+
+    <div class="as">
+      <h3>💼 Experience</h3>
+      <div class="ag">
+        <div class="ar2"><input class="ai" id="ae-t" placeholder="Job Title" /><input class="ai" id="ae-c" placeholder="Company & Location" /></div>
+        <input class="ai" id="ae-p" placeholder="Period (Jul 2025 – Present)" />
+        <textarea class="ata" id="ae-b" placeholder="Bullet points — one per line"></textarea>
+        <input class="ai" id="ae-tg" placeholder="Tags (comma separated)" />
+        <button class="abtn" onclick="addExp()">Add Experience</button>
+      </div>
+      <div class="alist" id="ex-list"></div>
+    </div>
+
+    <div class="as">
+      <h3>🚀 Projects</h3>
+      <div class="ag">
+        <input class="ai" id="apr-t" placeholder="Project Title" />
+        <input class="ai" id="apr-s" placeholder="Tech Stack" />
+        <textarea class="ata" id="apr-d" placeholder="Description" style="min-height:65px"></textarea>
+        <input class="ai" id="apr-l" placeholder="GitHub / Live URL (optional)" />
+        <button class="abtn" onclick="addProj()">Add Project</button>
+      </div>
+      <div class="alist" id="pr-list"></div>
+    </div>
+
+    <div class="as">
+      <h3>🏆 Certifications</h3>
+      <div class="ag">
+        <div class="ar2"><input class="ai" id="ac-n" placeholder="Certification Name" /><input class="ai" id="ac-i" placeholder="Issuer" /></div>
+        <div class="ar2"><input class="ai" id="ac-y" placeholder="Year" /><input class="ai" id="ac-ic" placeholder="Emoji (🏆)" /></div>
+        <button class="abtn" onclick="addCert()">Add Certification</button>
+      </div>
+      <div class="alist" id="ct-list"></div>
+    </div>
+
+    <div class="as">
+      <h3>🔒 Change Password</h3>
+      <div class="ar2">
+        <input class="ai" type="password" id="np1" placeholder="New password" />
+        <input class="ai" type="password" id="np2" placeholder="Confirm password" />
+      </div>
+      <button class="abtn" style="margin-top:10px" onclick="chgPwd()">Change Password</button>
+      <div class="amsg" id="pwd-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="n-brand" href="#hero">AK</a>
+  <ul class="n-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="n-right">
+    <a class="nbtn nbtn-gh" href="https://github.com/Aswin28krishna" target="_blank">GitHub ↗</a>
+    <button class="nbtn nbtn-edit" onclick="openPwd()">✎ Edit</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="bgrid"></div>
+  <div class="borb" style="width:600px;height:600px;background:rgba(56,189,248,.04);top:-150px;right:-150px"></div>
+  <div class="borb" style="width:400px;height:400px;background:rgba(245,158,11,.03);bottom:-80px;left:-100px"></div>
+  <div class="hero-inner">
+
+    <!-- PROFILE PHOTO — centered above name -->
+    <div class="photo-ring">
+      <div class="photo-ring-spin"></div>
+      <div class="photo-ring-bg"></div>
+      <div class="photo-img">
+        <img id="hero-photo" alt="Aswin Krishna T P" />
+        <div class="photo-placeholder" id="photo-ph">AK</div>
+      </div>
+      <div class="photo-hint">click ✎ Edit to add photo</div>
+    </div>
+
+    <div class="hero-badge"><span class="dpulse"></span> Available for Opportunities</div>
+    <h1 class="hero-name">ASWIN <span class="hl">KRISHNA</span> T P</h1>
+    <div class="hero-title">Data Analyst &nbsp;·&nbsp; Python &nbsp;·&nbsp; SQL &nbsp;·&nbsp; Power BI &nbsp;·&nbsp; ML</div>
+    <div class="hero-div"></div>
+    <p class="hero-bio"><strong>Entry-level Data Analyst</strong> with 6+ months experience transforming complex datasets into <strong>actionable business insights</strong> through Python, SQL, Power BI, and machine learning.</p>
+
+    <div class="hero-chips">
+      <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">Power BI</span>
+      <span class="chip">Machine Learning</span><span class="chip">ETL Pipelines</span>
+      <span class="chip">Databricks</span><span class="chip">Snowflake</span><span class="chip">EDA</span>
+    </div>
+
+    <div class="hero-btns">
+      <a href="#projects" class="btn-p">View My Work →</a>
+      <a href="https://www.linkedin.com/in/aswin-krishna-t-p" target="_blank" class="btn-g">LinkedIn ↗</a>
+      <a href="#contact" class="btn-g">Contact Me</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-v" id="s1">6+</div><div class="hstat-l">Months Exp.</div></div>
+      <div class="hstat"><div class="hstat-v" id="s2">8+</div><div class="hstat-l">Projects</div></div>
+      <div class="hstat"><div class="hstat-v" id="s3">6</div><div class="hstat-l">Certifications</div></div>
+      <div class="hstat"><div class="hstat-v">7.7</div><div class="hstat-l">CGPA / 10</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="sec" id="about">
+  <p class="sl rev">01 — About</p>
+  <h2 class="sh rev">Who I <em>Am</em></h2>
+  <div class="about-g">
+    <div>
+      <p class="ab-p rev"><strong>Entry-level Data Analyst</strong> passionate about turning raw data into stories that drive better business decisions. Currently interning at Luminar Technolab, Trivandrum.</p>
+      <p class="ab-p rev">Proficient in <strong>Python, SQL (Joins, Aggregations, Window Functions), and Power BI</strong> to analyze structured datasets. Experienced in building ETL pipelines, performing statistical analysis, and creating interactive dashboards.</p>
+      <p class="ab-p rev">Completed multiple end-to-end projects: <strong>loan default prediction, customer segmentation, climate analysis, anomaly detection</strong>, and more. B.E. Computer Science, Amrita College of Engineering (CGPA 7.7/10).</p>
+      <p class="ab-p rev">Currently upskilling in <strong>Machine Learning, Databricks, Snowflake, and Generative AI</strong>. Eager to contribute to a data-focused team.</p>
+    </div>
+    <div>
+      <div class="sk-label">Technical Proficiency</div>
+      <div id="sk-container"></div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<div class="sec" id="experience">
+  <p class="sl rev">02 — Experience</p>
+  <h2 class="sh rev">Where I've <em>Worked</em></h2>
+  <div class="exp-wrap" id="exp-container"></div>
+</div>
+
+<!-- PROJECTS -->
+<div class="sec" id="projects">
+  <p class="sl rev">03 — Projects</p>
+  <h2 class="sh rev">What I've <em>Built</em></h2>
+  <div class="proj-g" id="proj-container"></div>
+</div>
+
+<!-- CERTIFICATIONS -->
+<div class="sec" id="certifications">
+  <p class="sl rev">04 — Certifications</p>
+  <h2 class="sh rev">Credentials &amp; <em>Learning</em></h2>
+  <div class="cert-g" id="cert-container"></div>
+</div>
+
+<!-- CONTACT -->
+<div class="sec" id="contact">
+  <p class="sl rev">05 — Contact</p>
+  <div class="contact-g">
+    <div class="rev">
+      <div class="cl-h">LET'S<em>CONNECT</em></div>
+      <p class="cl-n">Open to entry-level Data Analyst roles, internships, and freelance analytics projects. Based in Kanniyakumari, TN — open to remote &amp; relocation.</p>
+    </div>
+    <div class="c-list rev" id="c-items"></div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 Aswin Krishna T P</span>
+  <span>Data Analyst · Kanniyakumari, Tamil Nadu</span>
+</footer>
+
+<script>
+// CURSOR
+const c1=document.getElementById('c1'),c2=document.getElementById('c2');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;c1.style.left=mx+'px';c1.style.top=my+'px';});
+(function loop(){tx+=(mx-tx)*.12;ty+=(my-ty)*.12;c2.style.left=tx+'px';c2.style.top=ty+'px';requestAnimationFrame(loop)})();
+
+// DATA
+const DEF={
+  password:'aswin2026',photo:'',
+  profile:{name:'Aswin Krishna T P',role:'Data Analyst',email:'aswinaswinkrishna048@gmail.com',phone:'+91 9600205518',linkedin:'https://www.linkedin.com/in/aswin-krishna-t-p',github:'https://github.com/Aswin28krishna',location:'Kanniyakumari, Tamil Nadu, India',bio:'Entry-level Data Analyst transforming complex datasets into actionable business insights.',s1:'6+',s2:'8+',s3:'6'},
+  skills:[
+    {n:'Python & Pandas',l:'Advanced',p:88},{n:'SQL',l:'Intermediate',p:78},
+    {n:'Power BI',l:'Intermediate',p:74},{n:'Machine Learning',l:'Intermediate',p:68},
+    {n:'Statistical Analysis',l:'Intermediate',p:72},{n:'Excel',l:'Advanced',p:85},
+    {n:'ETL Pipelines',l:'Intermediate',p:66},{n:'Databricks / Snowflake',l:'Beginner',p:42}
+  ],
+  experience:[
+    {t:'Data Science Intern',c:'Luminar Technolab — Thiruvananthapuram, Kerala',p:'July 2025 – February 2026',
+     b:['Performed EDA using Python and Pandas to identify trends, outliers, and patterns in structured datasets','Created visualizations and dashboards using Power BI and Matplotlib to present insights from data projects','Built data cleaning and preprocessing pipelines to prepare datasets for ML model training','Worked on feature engineering and statistical analysis to support predictive modeling projects','Collaborated with team to understand business requirements and deliver data-driven solutions'],
+     tg:['Python','Pandas','Power BI','EDA','Feature Engineering','ML']},
+    {t:'Python Development Intern',c:'Oracuz InfoTech — Thiruvananthapuram, Kerala',p:'June 2023 – July 2023',
+     b:['Wrote Python scripts to automate data extraction and transformation tasks, reducing manual work','Developed reusable code modules for common data handling operations','Assisted in debugging and testing existing data processing workflows'],
+     tg:['Python','Automation','Data Processing']},
+    {t:'AI Development Intern',c:'Vaayusastra Aerospace Pvt. Ltd. — IIT Madras Research Park, Chennai',p:'February 2023',
+     b:['Designed and deployed facial recognition attendance system using Python, OpenCV, and deep learning — achieving 95% recognition accuracy','Implemented preprocessing pipelines for image augmentation and feature extraction','Reduced manual attendance errors by 90%, saving 5+ hours weekly in administrative overhead'],
+     tg:['Python','OpenCV','Deep Learning','Computer Vision','AI']}
+  ],
+  projects:[
+    {t:'Risk360 — Loan Default Prediction',s:'Python, Scikit-learn, Pandas, Matplotlib',d:'End-to-end ML pipeline for loan default prediction. Data cleaning, feature engineering, model training and evaluation with performance visualizations.',l:'https://github.com/Aswin28krishna'},
+    {t:'Sales & Customer Analytics',s:'Python, Pandas, RFM Analysis',d:'Analyzed customer purchase data for patterns. RFM (Recency, Frequency, Monetary) segmentation with behavioral insight visualizations.',l:'https://github.com/Aswin28krishna'},
+    {t:'AI-Powered Expense Analyzer',s:'Python, Pandas, EDA',d:'Analyzed financial transactions to identify spending patterns. Performed EDA to uncover insights and tracked spending behavior over time.',l:'https://github.com/Aswin28krishna'},
+    {t:'Delhi Climate Analysis',s:'Python, Pandas, Matplotlib, Statistics',d:'Deep-dive climate data analysis uncovering seasonal patterns and temperature trends using statistical methods and visual storytelling.',l:'https://github.com/Aswin28krishna'},
+    {t:'Mall Customer Clustering',s:'Python, Scikit-learn, K-Means, Seaborn',d:'Unsupervised ML clustering segmenting mall customers by behavior. Applied K-Means to discover natural customer groups for targeted marketing.',l:'https://github.com/Aswin28krishna'},
+    {t:'Electric Vehicle Market Analysis',s:'Python, Pandas, Power BI, EDA',d:'Comprehensive EDA on EV market covering adoption trends, geographic distribution, and manufacturer performance across India.',l:'https://github.com/Aswin28krishna'}
+  ],
+  certifications:[
+    {n:'Tata GenAI Powered Data Analytics Job Simulation',i:'Tata / Forage',y:'2026',ic:'🏆'},
+    {n:'Databricks Academy — Databricks Fundamentals',i:'Databricks',y:'2026',ic:'⚡'},
+    {n:'Databricks Academy — Generative AI Fundamentals',i:'Databricks',y:'2026',ic:'🧠'},
+    {n:'Databricks Academy — AI Agent Fundamentals',i:'Databricks',y:'2026',ic:'🤖'},
+    {n:'Python (Basic)',i:'HackerRank',y:'2025',ic:'🐍'},
+    {n:'Machine Learning with Python',i:'freeCodeCamp',y:'2024',ic:'📊'}
+  ]
+};
+
+function load(){try{const d=localStorage.getItem('ak_pf2');return d?JSON.parse(d):DEF;}catch{return DEF;}}
+function save(){localStorage.setItem('ak_pf2',JSON.stringify(D));}
+let D=load(), pendingPhoto='';
+
+function renderAll(){renderPhoto();renderStats();renderSkills();renderExp();renderProj();renderCerts();renderContact();}
+
+function renderPhoto(){
+  const img=document.getElementById('hero-photo'),ph=document.getElementById('photo-ph');
+  if(D.photo){img.src=D.photo;img.classList.add('loaded');ph.style.display='none';}
+  else{img.classList.remove('loaded');ph.style.display='flex';}
+}
+function renderStats(){
+  const p=D.profile;
+  document.getElementById('s1').textContent=p.s1||'6+';
+  document.getElementById('s2').textContent=p.s2||'8+';
+  document.getElementById('s3').textContent=p.s3||'6';
+}
+function renderSkills(){
+  document.getElementById('sk-container').innerHTML=D.skills.map(s=>`
+    <div class="sk-row">
+      <div class="sk-meta"><span class="sk-n">${s.n}</span><span class="sk-p">${s.l} · ${s.p}%</span></div>
+      <div class="sk-track"><div class="sk-fill" style="width:${s.p}%"></div></div>
+    </div>`).join('');
+}
+function renderExp(){
+  document.getElementById('exp-container').innerHTML=D.experience.map(e=>`
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div class="exp-period">${e.p}</div>
+      <div class="exp-role">${e.t}</div>
+      <div class="exp-co">${e.c}</div>
+      <ul class="exp-ul">${e.b.map(b=>`<li>${b}</li>`).join('')}</ul>
+      <div class="tags">${e.tg.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    </div>`).join('');
+}
+function renderProj(){
+  document.getElementById('proj-container').innerHTML=D.projects.map((p,i)=>`
+    <div class="proj-card">
+      <div class="proj-n">0${i+1}</div>
+      <div class="proj-t">${p.t}</div>
+      <div class="proj-stack">${p.s}</div>
+      <div class="proj-d">${p.d}</div>
+      ${p.l?`<a class="proj-lnk" href="${p.l}" target="_blank">View on GitHub →</a>`:''}
+    </div>`).join('');
+}
+function renderCerts(){
+  document.getElementById('cert-container').innerHTML=D.certifications.map(c=>`
+    <div class="cert-c">
+      <div class="cert-ic">${c.ic||'🏅'}</div>
+      <div class="cert-n">${c.n}</div>
+      <div class="cert-i">${c.i}</div>
+      <div class="cert-y">${c.y}</div>
+    </div>`).join('');
+}
+function renderContact(){
+  const p=D.profile;
+  document.getElementById('c-items').innerHTML=`
+    <a class="c-link" href="mailto:${p.email}"><span class="c-ic">✉</span><div><div class="c-lbl">Email</div><div class="c-val">${p.email}</div></div></a>
+    <a class="c-link" href="tel:${p.phone}"><span class="c-ic">📞</span><div><div class="c-lbl">Phone</div><div class="c-val">${p.phone}</div></div></a>
+    <a class="c-link" href="${p.linkedin}" target="_blank"><span class="c-ic">💼</span><div><div class="c-lbl">LinkedIn</div><div class="c-val">aswin-krishna-t-p</div></div></a>
+    <a class="c-link" href="${p.github}" target="_blank"><span class="c-ic">💻</span><div><div class="c-lbl">GitHub</div><div class="c-val">Aswin28krishna</div></div></a>`;
+}
+
+function initObs(){
+  const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('vis'),i*70);});},{threshold:0.08});
+  document.querySelectorAll('.rev,.exp-item,.proj-card,.cert-c').forEach(el=>obs.observe(el));
+}
+
+// ADMIN
+function openPwd(){document.getElementById('pwd-ov').classList.add('on');setTimeout(()=>document.getElementById('pwd-inp').focus(),50);}
+document.getElementById('pwd-inp').addEventListener('keydown',e=>{if(e.key==='Enter')chkPwd();});
+function chkPwd(){
+  if(document.getElementById('pwd-inp').value===D.password){
+    document.getElementById('pwd-ov').classList.remove('on');
+    document.getElementById('pwd-inp').value='';
+    document.getElementById('pwd-err').style.display='none';
+    openAdmin();
+  } else {document.getElementById('pwd-err').style.display='block';document.getElementById('pwd-inp').value='';}
+}
+function openAdmin(){
+  const p=D.profile;
+  ['name','role','email','phone','linkedin','github','location'].forEach(k=>{const el=document.getElementById('ap-'+k);if(el)el.value=p[k]||'';});
+  document.getElementById('ap-bio').value=p.bio||'';
+  document.getElementById('ap-s1').value=p.s1||'';
+  document.getElementById('ap-s2').value=p.s2||'';
+  document.getElementById('ap-s3').value=p.s3||'';
+  if(D.photo){const pv=document.getElementById('pua-prev');pv.src=D.photo;pv.style.display='block';}
+  renderAdminLists();
+  document.getElementById('admin').classList.add('on');
+}
+function closeAdmin(){document.getElementById('admin').classList.remove('on');}
+function renderAdminLists(){
+  document.getElementById('sk-list').innerHTML=D.skills.map((s,i)=>`<div class="ali"><span>${s.n} — ${s.l} (${s.p}%)</span><button class="adel" onclick="del('skills',${i})">✕</button></div>`).join('');
+  document.getElementById('ex-list').innerHTML=D.experience.map((e,i)=>`<div class="ali"><span><strong>${e.t}</strong> @ ${e.c.split('—')[0].trim()}</span><button class="adel" onclick="del('experience',${i})">✕</button></div>`).join('');
+  document.getElementById('pr-list').innerHTML=D.projects.map((p,i)=>`<div class="ali"><span>${p.t}</span><button class="adel" onclick="del('projects',${i})">✕</button></div>`).join('');
+  document.getElementById('ct-list').innerHTML=D.certifications.map((c,i)=>`<div class="ali"><span>${c.ic} ${c.n}</span><button class="adel" onclick="del('certifications',${i})">✕</button></div>`).join('');
+}
+function del(type,i){D[type].splice(i,1);save();renderAll();renderAdminLists();initObs();}
+
+function handlePhoto(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    pendingPhoto=ev.target.result;
+    const pv=document.getElementById('pua-prev');pv.src=pendingPhoto;pv.style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+function savePhoto(){
+  if(!pendingPhoto){alert('Please select a photo first.');return;}
+  D.photo=pendingPhoto;save();renderPhoto();pendingPhoto='';
+  alert('✓ Profile photo saved! It will show on your live site.');
+}
+function removePhoto(){D.photo='';save();renderPhoto();document.getElementById('pua-prev').style.display='none';pendingPhoto='';}
+
+function saveProfile(){
+  D.profile={
+    name:g('ap-name')||D.profile.name,role:g('ap-role')||D.profile.role,
+    email:g('ap-email')||D.profile.email,phone:g('ap-phone')||D.profile.phone,
+    linkedin:g('ap-linkedin')||D.profile.linkedin,github:g('ap-github')||D.profile.github,
+    location:g('ap-location')||D.profile.location,bio:g('ap-bio')||D.profile.bio,
+    s1:g('ap-s1')||D.profile.s1,s2:g('ap-s2')||D.profile.s2,s3:g('ap-s3')||D.profile.s3
+  };
+  save();renderAll();flash('pm');
+}
+function addSkill(){
+  const n=g('as-n');if(!n){alert('Name required');return;}
+  D.skills.push({n,l:g('as-l')||'Beginner',p:parseInt(g('as-p'))||50});
+  save();renderAll();renderAdminLists();cl('as-n','as-l','as-p');
+}
+function addExp(){
+  const t=g('ae-t');if(!t){alert('Title required');return;}
+  D.experience.unshift({t,c:g('ae-c'),p:g('ae-p'),b:g('ae-b').split('\n').map(x=>x.trim()).filter(Boolean),tg:g('ae-tg').split(',').map(x=>x.trim()).filter(Boolean)});
+  save();renderAll();renderAdminLists();initObs();cl('ae-t','ae-c','ae-p','ae-b','ae-tg');
+}
+function addProj(){
+  const t=g('apr-t');if(!t){alert('Title required');return;}
+  D.projects.push({t,s:g('apr-s'),d:g('apr-d'),l:g('apr-l')});
+  save();renderAll();renderAdminLists();initObs();cl('apr-t','apr-s','apr-d','apr-l');
+}
+function addCert(){
+  const n=g('ac-n');if(!n){alert('Name required');return;}
+  D.certifications.push({n,i:g('ac-i'),y:g('ac-y'),ic:g('ac-ic')||'🏅'});
+  save();renderAll();renderAdminLists();initObs();cl('ac-n','ac-i','ac-y','ac-ic');
+}
+function chgPwd(){
+  const np=g('np1'),cp=g('np2'),msg=document.getElementById('pwd-msg');
+  msg.style.display='block';
+  if(!np){msg.textContent='Enter new password';return;}
+  if(np!==cp){msg.textContent='Passwords do not match';msg.style.color='var(--rose)';return;}
+  D.password=np;save();msg.textContent='✓ Password updated!';msg.style.color='var(--cyan)';
+  cl('np1','np2');setTimeout(()=>msg.style.display='none',3000);
+}
+function g(id){return document.getElementById(id)?.value?.trim()||'';}
+function cl(...ids){ids.forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});}
+function flash(id){const e=document.getElementById(id);e.style.display='block';setTimeout(()=>e.style.display='none',2500);}
+
+document.addEventListener('DOMContentLoaded',()=>{renderAll();setTimeout(initObs,3700);});
+</script>
+</body>
+</html>
